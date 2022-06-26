@@ -1,0 +1,86 @@
+.backModalEdit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000b6;
+}
+.modalEdit {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background-color: #eee;
+}
+
+.logoEdit {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 50px;
+  color: #aaa;
+  height: 80px;
+}
+.logoEdit p {
+  padding: 0 30px;
+}
+.divInputEditar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 300px;
+  background-color: #fff;
+}
+.divInputEditar div {
+  display: flex;
+  align-items: center;
+}
+.inputEditar {
+  width: 380px;
+  height: 40px;
+  margin: 15px;
+  font-size: 20px;
+  padding: 0 0 0 50px;
+  border: 1px solid #bbb;
+}
+.logoInput {
+  position: fixed;
+  left: 50px;
+  color: #aaa;
+  font-size: 20px;
+}
+.btSalvarCancelar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+}
+.btSalvar {
+  height: 40px;
+  padding: 0 30px;
+  color: #fff;
+  background-color: #3996d9;
+  border: 0;
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 30px 15px;
+  font-size: 15px;
+}
+
+.btCancelar {
+  height: 40px;
+  padding: 0 30px;
+  color: #fff;
+  background-color: rgb(241, 76, 76);
+  border: 0;
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 30px 15px;
+  font-size: 15px;
+}
