@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/desafio_dev_partner/static/css/main.a46c24d5.css",
+    "main.js": "/desafio_dev_partner/static/js/main.5c7fdfaf.js",
+    "index.html": "/desafio_dev_partner/index.html",
+    "main.a46c24d5.css.map": "/desafio_dev_partner/static/css/main.a46c24d5.css.map",
+    "main.5c7fdfaf.js.map": "/desafio_dev_partner/static/js/main.5c7fdfaf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a46c24d5.css",
+    "static/js/main.5c7fdfaf.js"
+  ]
+}
