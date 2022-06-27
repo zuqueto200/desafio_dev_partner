@@ -3,13 +3,12 @@ import './index.css'
 import { FiEdit } from 'react-icons/fi';
 import { GoPerson } from 'react-icons/go';
 import { MdEmail } from 'react-icons/md';
-import { BsFillTelephoneFill } from 'react-icons/bs';
+import { BsFillSdCardFill, BsFillTelephoneFill } from 'react-icons/bs';
 import { useList } from '../../context/list';
 
 export function Novo() {
     const [modalNovo, setModalNovo] = useState(false)
     const { list, setList } = useList()
-
 
     function fnBtSalvar() {
 
@@ -19,64 +18,18 @@ export function Novo() {
 
         if (inputNome !== '' && inputEmail !== '' && inputTelefone !== '') {
 
+            setList(prevState => [...prevState, {
+                id: Date.now(),
+                nome: inputNome,
+                email: inputEmail,
+                telefone: inputTelefone
+            }])
+            setModalNovo(false)
 
-
-
-
-
-
-
-
-
-            const init = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: Date.now(),
-                    nome: inputNome,
-                    email: inputEmail,
-                    telefone: inputTelefone
-                })
-            }
-
-
-            fetch('https://testapi.io/api/zuqueto/agenda', init)
-                .then((res) => res.text())
-                .then((data) => {
-                    setList(data)
-                    console.log(data)
-                }
-                )
-
-
-
-
-
-
-
-
-
-
-            // setList(prevState => [...prevState, {
-            //     id: Date.now(),
-            //     nome: inputNome,
-            //     email: inputEmail,
-            //     telefone: inputTelefone
-            // }])
+        } else {
+            document.querySelector('.avisoNovoInput').textContent = 'PREENCHER TODOS OS CAMPOS'
         }
     }
-
-
-
-
-    useEffect(() => {
-
-
-
-    }, [])
-
-
-
 
     return (
         <>
@@ -96,18 +49,19 @@ export function Novo() {
                             <GoPerson className='iconeInput' />
                         </div>
                         <div>
-                            <input className='inputNovo' placeholder='E-mail' type={'email'} />
+                            <input className='inputNovo' placeholder='E-mail' type={'text'} />
                             <MdEmail className='iconeInput' />
                         </div>
                         <div>
-                            <input className='inputNovo' placeholder='Telefone' type={'text'} />
+                            <input className='inputNovo' placeholder='Telefone'
+                                type={'text'} />
                             <BsFillTelephoneFill className='iconeInput' />
                         </div>
-
+                        <span className='avisoNovoInput'></span>
                     </div>
                     <div className='divSalvarCancelar'>
 
-                        <button className='btSalvar' onClick={() => { fnBtSalvar(); setModalNovo(false) }}>Salvar</button>
+                        <button className='btSalvar' onClick={() => { fnBtSalvar(); }}>Salvar</button>
                         <button className='btCancelar' onClick={() => setModalNovo(false)}>Cancelar</button>
 
                     </div>

@@ -53,6 +53,13 @@
   color: #aaa;
   font-size: 20px;
 }
+.avisoNovoInput {
+  position: absolute;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(241, 76, 76);
+  top: 340px;
+}
 .btSalvarCancelar {
   display: flex;
   justify-content: center;

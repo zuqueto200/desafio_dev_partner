@@ -10,7 +10,7 @@ export const ListContext = createContext(ListContextDefault)
 
 export const ListProvider = (props) => {
     
-    const [list, setList] = useState([])
+    const [list, setList] = useState(lista)
 
     return (
         <ListContext.Provider value={{ list, setList }}>

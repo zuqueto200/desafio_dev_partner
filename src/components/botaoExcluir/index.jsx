@@ -9,11 +9,8 @@ export function Excluir(props) {
     const [modalExcluir, setModalExcluir] = useState(true)
     const { list, setList } = useList()
 
-
     function fnBtExcluir() {
-
         setList(prevStates => [...prevStates].filter((item) => item.id !== props.btItem.id))
-
     }
 
     return (
