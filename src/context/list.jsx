@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react"
-import lista from '../agenda.json'
 
 export const ListContextDefault = {
     list: [],
@@ -10,7 +9,7 @@ export const ListContext = createContext(ListContextDefault)
 
 export const ListProvider = (props) => {
     
-    const [list, setList] = useState(lista)
+    const [list, setList] = useState([])
 
     return (
         <ListContext.Provider value={{ list, setList }}>

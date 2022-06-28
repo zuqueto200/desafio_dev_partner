@@ -1,33 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import './index.css'
-import { FiEdit } from 'react-icons/fi';
+import React, { useState } from 'react'
+import { BsFillTelephoneFill } from 'react-icons/bs';
+import { useList } from '../../context/list';
+import { useLoad } from '../../context/load';
 import { GoPerson } from 'react-icons/go';
 import { MdEmail } from 'react-icons/md';
-import { BsFillSdCardFill, BsFillTelephoneFill } from 'react-icons/bs';
-import { useList } from '../../context/list';
+import { FiEdit } from 'react-icons/fi';
+import { URLBASE } from '../URL';
+import './index.css'
 
 export function Novo() {
     const [modalNovo, setModalNovo] = useState(false)
-    const { list, setList } = useList()
+    const { setList } = useList()
+    const { setLoad } = useLoad()
+    const [aviso, setAviso] = useState('')
+
+    const [inputsNovo, setInputsNovo] = useState({
+        nome: '',
+        email: '',
+        telefone: ''
+    })
 
     function fnBtSalvar() {
 
-        let inputNome = document.getElementsByClassName('inputNovo')[0].value
-        let inputEmail = document.getElementsByClassName('inputNovo')[1].value
-        let inputTelefone = document.getElementsByClassName('inputNovo')[2].value
+        if (inputsNovo.nome !== '' && inputsNovo.email !== '' && inputsNovo.telefone !== '') {
 
-        if (inputNome !== '' && inputEmail !== '' && inputTelefone !== '') {
+            const init = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: Date.now(),
+                    nome: inputsNovo.nome,
+                    email: inputsNovo.email,
+                    telefone: inputsNovo.telefone
+                })
+            }
 
-            setList(prevState => [...prevState, {
-                id: Date.now(),
-                nome: inputNome,
-                email: inputEmail,
-                telefone: inputTelefone
-            }])
+            const postFetch = async () => {
+                try {
+                    setLoad(true)
+                    const response = await fetch(URLBASE, init);
+                    const data = await response.json();
+                    setList(prevState => [...prevState, { ...data }])
+                }
+                catch (err) {
+                    console.log('err POST', err)
+                }
+                finally {
+                    setLoad(false)
+
+                }
+            }
+
+            postFetch()
+
+            setInputsNovo('')
+
             setModalNovo(false)
-
         } else {
-            document.querySelector('.avisoNovoInput').textContent = 'PREENCHER TODOS OS CAMPOS'
+            setAviso('PREENCHER TODOS OS CAMPOS')
         }
     }
 
@@ -45,19 +75,50 @@ export function Novo() {
                     <div className='divInputNovo'>
 
                         <div>
-                            <input className='inputNovo' placeholder='Nome' type={'text'} />
+                            <input
+                                className='inputNovo'
+                                type={'text'}
+                                placeholder='Nome'
+                                onChange={(e) => {
+                                    setInputsNovo(prev => (
+                                        { ...prev, nome: e.target.value }
+                                    ))
+                                }} />
+
                             <GoPerson className='iconeInput' />
                         </div>
+
+
                         <div>
-                            <input className='inputNovo' placeholder='E-mail' type={'text'} />
+                            <input
+                                className='inputNovo'
+                                placeholder='E-mail'
+                                type={'text'}
+                                onChange={(e) => {
+                                    setInputsNovo(prev => (
+                                        { ...prev, email: e.target.value }
+                                    ))
+                                }} />
+
                             <MdEmail className='iconeInput' />
                         </div>
+
+
                         <div>
-                            <input className='inputNovo' placeholder='Telefone'
-                                type={'text'} />
+                            <input
+                                className='inputNovo'
+                                placeholder='Telefone'
+                                type={'text'}
+                                onChange={(e) => {
+                                    setInputsNovo(prev => (
+                                        { ...prev, telefone: e.target.value }
+                                    ))
+                                }} />
+
                             <BsFillTelephoneFill className='iconeInput' />
+
                         </div>
-                        <span className='avisoNovoInput'></span>
+                        <span className='avisoNovoInput'>{aviso}</span>
                     </div>
                     <div className='divSalvarCancelar'>
 
@@ -66,8 +127,7 @@ export function Novo() {
 
                     </div>
                 </div>
-            </div> : null
-            }
+            </div> : null}
         </>
     )
 }

@@ -1,43 +1,68 @@
-import React, { useEffect, useState } from 'react'
-import './index.css'
-import { FiEdit } from 'react-icons/fi';
-import { GoPerson } from 'react-icons/go';
-import { MdEmail } from 'react-icons/md';
+import React, { useState } from 'react'
 import { BsFillTelephoneFill } from 'react-icons/bs';
 import { useList } from '../../context/list';
+import { useLoad } from '../../context/load';
+import { GoPerson } from 'react-icons/go';
+import { MdEmail } from 'react-icons/md';
+import { FiEdit } from 'react-icons/fi';
+import { URLBASE } from '../URL';
+import './index.css'
 
 export function Editar(props) {
     const [modalEditar, setModalEditar] = useState(true)
     const { setList } = useList()
+    const { setLoad } = useLoad()
+    const [ aviso, setAviso ] = useState('')
+
+    const [inputsEditar, setInputsEditar] = useState({
+        nome: props.btItem.nome,
+        email: props.btItem.email,
+        telefone: props.btItem.telefone
+    })
 
     function fnBtEditar() {
 
-        let inputNome = document.getElementsByClassName('inputEditar')[0].value
-        let inputEmail = document.getElementsByClassName('inputEditar')[1].value
-        let inputTelefone = document.getElementsByClassName('inputEditar')[2].value
+        if (inputsEditar.nome !== '' && inputsEditar.email !== '' && inputsEditar.telefone !== '') {
 
-        if (inputNome !== '' && inputEmail !== '' && inputTelefone !== '') {
+            const init = {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: inputsEditar.nome,
+                    email: inputsEditar.email,
+                    telefone: inputsEditar.telefone
+                })
+            }
 
-            setList(prevStates => prevStates.map((item) =>
-                item.id === props.btItem.id ? {
-                    nome: inputNome,
-                    email: inputEmail,
-                    telefone: inputTelefone
-                } : item
-            ))
+            const putFetch = async () => {
+                try {
+                    setLoad(true)
+                    const response = await fetch(URLBASE + props.btItem.id, init);
+                    const data = await response.json();
+
+                    setList(prevStates => prevStates.map((item) =>
+                        item.id === props.btItem.id ? { ...data } : item
+                    ))
+                }
+                catch (err) {
+                    console.log('err PUT', err)
+                }
+                finally {
+                    setLoad(false)
+                }
+            }
+
+            putFetch()
+
+            setInputsEditar('')
             setModalEditar(false);
             props.setBtEditar(false)
+
         } else {
-            document.querySelector('.avisoNovoInput').textContent = 'PREENCHER TODOS OS CAMPOS'
+            
+            setAviso('PREENCHER TODOS OS CAMPOS')
         }
     }
-
-    useEffect(() => {
-
-        document.getElementsByClassName('inputEditar')[0].value = props.btItem.nome
-        document.getElementsByClassName('inputEditar')[1].value = props.btItem.email
-        document.getElementsByClassName('inputEditar')[2].value = props.btItem.telefone
-    })
 
     return (
         <>
@@ -50,23 +75,51 @@ export function Editar(props) {
                     <div className='divInputEditar'>
 
                         <div>
-                            <input className='inputEditar'
+                            <input
+                                className='inputEditar'
+                                defaultValue={props.btItem.nome}
                                 placeholder='Nome'
+                                onChange={(e) => {
+                                    setInputsEditar(prev => (
+                                        { ...prev, nome: e.target.value }
+                                    ))
+                                }}
                                 type={'text'} />
+
                             <GoPerson className='logoInput' />
                         </div>
 
-
                         <div>
-                            <input className='inputEditar' placeholder='E-mail' type={'email'} />
+                            <input
+                                className='inputEditar'
+                                defaultValue={props.btItem.email}
+                                placeholder='E-mail'
+                                onChange={(e) => {
+                                    setInputsEditar(prev => (
+                                        { ...prev, email: e.target.value }
+                                    ))
+                                }}
+                                type={'email'} />
+
                             <MdEmail className='logoInput' />
                         </div>
 
                         <div>
-                            <input className='inputEditar' placeholder='Telefone' type={'text'} />
+                            <input
+                                className='inputEditar'
+                                defaultValue={props.btItem.telefone}
+                                placeholder='Telefone'
+                                onChange={(e) => {
+                                    setInputsEditar(prev => (
+                                        { ...prev, telefone: e.target.value }
+                                    ))
+                                }}
+                                type={'text'} />
+
                             <BsFillTelephoneFill className='logoInput' />
+
                         </div>
-                        <span className='avisoNovoInput'></span>
+                        <span className='avisoNovoInput'>{aviso}</span>
 
                     </div>
                     <div className='btSalvarCancelar'>
